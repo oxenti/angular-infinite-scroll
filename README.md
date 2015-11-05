@@ -1,3 +1,4 @@
+#Forked from [ngInfiniteScroll](https://github.com/sroze/ngInfiniteScroll)
 ![logo](http://sroze.github.com/ngInfiniteScroll/images/logo-resized.png)
 
 [![Build Status](https://travis-ci.org/sroze/ngInfiniteScroll.png?branch=master)](https://travis-ci.org/sroze/ngInfiniteScroll)

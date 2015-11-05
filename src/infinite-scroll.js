@@ -18,7 +18,7 @@
           infiniteScrollListenForEvent: '@'
         },
         link: function(scope, elem, attrs) {
-          var changeContainer, checkWhenEnabled, container, handleInfiniteScrollContainer, handleInfiniteScrollDisabled, handleInfiniteScrollDistance, handleInfiniteScrollUseDocumentBottom, handler, height, immediateCheck, offsetTop, pageYOffset, scrollDistance, scrollEnabled, throttle, unregisterEventListener, useDocumentBottom, windowElement;
+          var changeContainer, checkWhenEnabled, container, handleInfiniteScrollContainer, handleInfiniteScrollDisabled, handleInfiniteScrollDistance, handleInfiniteScrollUseDocumentBottom, handler, height, immediateCheck, offsetTop, pageYOffset, scrollDistance, scrollEnabled, throttle, unregisterEventListener, useDocumentBottom, windowElement, execIfShould, execIfShouldInterval;
           windowElement = angular.element($window);
           scrollDistance = null;
           scrollEnabled = null;
@@ -27,6 +27,8 @@
           immediateCheck = true;
           useDocumentBottom = false;
           unregisterEventListener = null;
+          execIfShouldInterval = false;
+
           height = function(elem) {
             elem = elem[0] || elem;
             if (isNaN(elem.offsetHeight)) {
@@ -49,7 +51,10 @@
               return elem.ownerDocument.defaultView.pageYOffset;
             }
           };
-          handler = function() {
+
+          execIfShould = function () {
+            if (scope.infiniteScrollDisabled) { return; }
+
             var containerBottom, containerTopOffset, elementBottom, remaining, shouldScroll;
             if (container === windowElement) {
               containerBottom = height(container) + pageYOffset(container[0].document.documentElement);
@@ -78,6 +83,11 @@
               return checkWhenEnabled = false;
             }
           };
+
+          handler = function () {
+            execIfShouldInterval = $interval(execIfShould, 1000);
+          };
+
           throttle = function(func, wait) {
             var later, previous, timeout;
             timeout = null;
@@ -111,6 +121,7 @@
             handler = throttle(handler, THROTTLE_MILLISECONDS);
           }
           scope.$on('$destroy', function() {
+            $interval.cancel(execIfShouldInterval);
             container.unbind('scroll', handler);
             if (unregisterEventListener != null) {
               unregisterEventListener();
@@ -127,6 +138,9 @@
             if (scrollEnabled && checkWhenEnabled) {
               checkWhenEnabled = false;
               return handler();
+            }
+            if (!scrollEnabled) {
+              $interval.cancel(execIfShouldInterval);
             }
           };
           scope.$watch('infiniteScrollDisabled', handleInfiniteScrollDisabled);

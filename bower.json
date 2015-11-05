@@ -1,16 +1,17 @@
 {
-    "name": "ngInfiniteScroll",
-    "main": "build/ng-infinite-scroll.js",
+    "name": "angular-infinite-scroll",
+    "main": "src/angular-infinite-scroll.js",
     "ignore": [
         "**/.*",
         "_*",
         "node_modules",
+        "bower_components",
         "compile",
         "test",
-        "Gruntfile.coffee",
+        "Gruntfile.js",
         ".*"
     ],
     "dependencies": {
-        "angular": ">=1.2.0"
+        "angular": "1.2.0"
     }
 }

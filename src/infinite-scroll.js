@@ -7,7 +7,7 @@
   mod.value('THROTTLE_MILLISECONDS', null);
 
   mod.directive('infiniteScroll', [
-    '$rootScope', '$window', '$interval', 'THROTTLE_MILLISECONDS', function($rootScope, $window, $interval, THROTTLE_MILLISECONDS) {
+    '$rootScope', '$window', '$interval', 'THROTTLE_MILLISECONDS', '$timeout', function($rootScope, $window, $interval, THROTTLE_MILLISECONDS, $timeout) {
       return {
         scope: {
           infiniteScroll: '&',
@@ -70,11 +70,9 @@
             if (shouldScroll) {
               checkWhenEnabled = true;
               if (scrollEnabled) {
-                if (scope.$$phase || $rootScope.$$phase) {
+                $timeout(function () {
                   return scope.infiniteScroll();
-                } else {
-                  return scope.$apply(scope.infiniteScroll);
-                }
+                }, 0);
               }
             } else {
               return checkWhenEnabled = false;

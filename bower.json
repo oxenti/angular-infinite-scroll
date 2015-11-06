@@ -1,5 +1,5 @@
 {
-    "name": "angular-infinite-scroll",
+    "name": "ngOxenti-infinite-scroll",
     "main": "src/angular-infinite-scroll.js",
     "ignore": [
         "**/.*",
